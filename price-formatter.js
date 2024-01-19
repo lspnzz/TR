@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (priceTags.length > 0) {
-    priceTags.array.forEach((priceTag) => {
+    priceTags.forEach((priceTag) => {
       const rawPrice = parseFloat(priceTag.textContent);
       const formattedPrice = formatPrice(rawPrice);
       priceTag.textContent = formattedPrice;
