@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const atfImageWrapper = document.querySelector(".atf-image-wrapper");
   const pageTitle = document.querySelector(".atf-heading");
-  const pageTitleOverline = document.querySelector("#title-overline");
   const navbarLinks = document.querySelectorAll(".navbar_link");
   const navbarLineHorizontal = document.querySelector(
     "#section-line-horizontal-navbar"
