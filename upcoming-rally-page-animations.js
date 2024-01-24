@@ -80,7 +80,6 @@ document.addEventListener("DOMContentLoaded", () => {
       scrollTrigger: {
         trigger: atfImageWrapper,
         start: "top 30%",
-        markers: true,
       },
     }
   );
