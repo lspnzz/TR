@@ -1,0 +1,169 @@
+<!-- (LS): Gsap Flip -->
+<script src="https://uploads-ssl.webflow.com/659cf816376dfad3d92b1ad1/65a8e54b88a906b793a1da6e_Flip.min.js.txt"></script>
+
+<!-- (LS): Home animations -->
+<script>
+const defaultAnimationDuration = 2.5;
+const defaultAnimationEase = "circ.inOut";
+const IS_DEVICE_DESKTOP = window.innerWidth >= 992;
+
+window.addEventListener("DOMContentLoaded", () => {
+  gsap.registerPlugin(ScrollTrigger);
+
+  const videoWrapperAtf = document.querySelector(".atf-video_wrapper");
+  const trLogoAtf = document.querySelector("#tr-logo-atf");
+
+  const openingTl = gsap.timeline({
+    defaults: {
+      duration: defaultAnimationDuration,
+      ease: defaultAnimationEase,
+    },
+  });
+
+  const videoAnimationTl = setupVideoAnimationTl(videoWrapperAtf);
+  const navbarAnimationTl = setupNavbarAnimationTl();
+
+  openingTl.add(videoAnimationTl);
+  openingTl.add(navbarAnimationTl, 0);
+  openingTl.from(trLogoAtf, { y: "3rem" }, "0"); // (LS): Animate TR logo.
+
+  if (IS_DEVICE_DESKTOP) {
+    setupVideoAnimationOnScroll(videoWrapperAtf);
+  }
+  setupUpcomingRalliesSlider();
+});
+
+// BEGIN - (LS): Page load animations.
+function setupVideoAnimationTl(videoWrapper) {
+  //   gsap.registerPlugin(Flip);
+
+  const videoAnimationTl = gsap.timeline({
+    defaults: {
+      duration: defaultAnimationDuration,
+      ease: defaultAnimationEase,
+    },
+  });
+
+  videoAnimationTl
+    .from(
+    videoWrapper,
+    {
+      width: "140%",
+      x: "-15%",
+      y: "-20%",
+    },
+    "<"
+  )
+    .fromTo(
+    videoWrapper,
+    {
+      clipPath:
+      "polygon(0% 0%, 0% 0%, 100% 0%, 100% 100%, 100% 100%, 0% 100%)",
+    },
+    {
+      clipPath:
+      "polygon(0% 30%, 50% 0%, 100% 0%, 100% 70%, 50% 100%, 0% 100%)",
+    },
+    "<"
+  );
+
+  return videoAnimationTl;
+}
+
+function setupNavbarAnimationTl() {
+  const navbarLinks = document.querySelectorAll(".navbar_link");
+  const navbarLineHorizontal = document.querySelector(
+    "#section-line-horizontal-navbar"
+  );
+  const navbarHighlight = document.querySelector(".navbar_highlight");
+
+  const navbarAnimationTl = gsap.timeline({
+    defaults: {
+      duration: defaultAnimationDuration,
+      ease: defaultAnimationEase,
+    },
+  });
+
+  navbarAnimationTl
+    .from(navbarLineHorizontal, {
+    right: "auto",
+  })
+    .from(
+    navbarLinks,
+    {
+      opacity: 0,
+      y: "1rem",
+      stagger: 0.1,
+    },
+    "<"
+  )
+    .from(navbarHighlight, { scaleX: 0, opacity: 0 }, "<+0.4");
+
+  return navbarAnimationTl;
+}
+// END - (LS): Page load animations.
+
+// BEGIN - (LS): Scroll animations.
+function setupVideoAnimationOnScroll(videoWrapper) {
+  const clipPathTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: videoWrapper,
+      start: "top 20%",
+      end: "bottom 50%",
+      scrub: true,
+    },
+  });
+
+  clipPathTl.fromTo(
+    videoWrapper,
+    {
+      clipPath: "polygon(0% 30%, 50% 0%, 100% 0%, 100% 70%, 50% 100%, 0% 100%)",
+    },
+    {
+      clipPath: "polygon(0% 0%, 50% 0%, 100% 30%, 100% 100%, 50% 100%, 0% 70%)",
+      ease: "none",
+    }
+  );
+}
+// END - (LS): Scroll animations.
+
+function setupUpcomingRalliesSlider() {
+  const nextButton = document.querySelector("#slider-button-next");
+  const prevButton = document.querySelector("#slider-button-prev");
+
+  const slider = new Swiper(".swiper.is-upcoming-rallies-slider", {
+    slidesPerView: "auto",
+    centeredSlides: false, // (LS): This is for mobile.
+    speed: 1000,
+    slideActiveClass: "is-active",
+    slideToClickedSlide: true,
+    keyboard: true,
+
+    mouseWheel: {
+      forceToAxis: true,
+    },
+    navigation: {
+      nextEl: nextButton,
+      prevEl: prevButton,
+      disabledClass: "is-disabled",
+      // lockClass: "is-disabled",
+    },
+    breakpoints: {
+      // (LS): When window width is >= 767px
+      767: {
+        centeredSlides: false,
+      },
+    },
+    on: {
+      //   beforeSlideChangeStart: activeSlideAnimationReset,
+      //   slideChangeTransitionEnd: activeSlideAnimationTransition,
+
+      reachEnd: function () {
+        // (LS): this fixes the "last slide not active" issue when two slides are in view at the same time.
+        this.snapGrid = [...this.slidesGrid];
+      },
+    },
+  });
+}
+
+</script>
