@@ -29,6 +29,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
   if (IS_DEVICE_DESKTOP) {
     setupVideoAnimationOnScroll(videoWrapperAtf);
+  } else {
+    setupVideoAnimationOnScrollOnMobile(videoWrapperAtf);
   }
   setupUpcomingRalliesSlider();
 });
@@ -110,6 +112,28 @@ function setupVideoAnimationOnScroll(videoWrapper) {
       trigger: videoWrapper,
       start: "top 20%",
       end: "bottom 50%",
+      scrub: true,
+    },
+  });
+
+  clipPathTl.fromTo(
+    videoWrapper,
+    {
+      clipPath: "polygon(0% 30%, 50% 0%, 100% 0%, 100% 70%, 50% 100%, 0% 100%)",
+    },
+    {
+      clipPath: "polygon(0% 0%, 50% 0%, 100% 30%, 100% 100%, 50% 100%, 0% 70%)",
+      ease: "none",
+    }
+  );
+}
+
+function setupVideoAnimationOnScrollOnMobile(videoWrapper) {
+  const clipPathTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: videoWrapper,
+      start: "top 40%",
+      end: "bottom 20%",
       scrub: true,
     },
   });
